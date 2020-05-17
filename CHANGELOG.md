@@ -46,7 +46,7 @@ _No changes._
 * Use the MimeMagic gem to inspect file headers for the mime type. This allows for mitigation of CVE-2016-3714, in combination with a `content_type_whitelist`(@locriani [#1934](https://github.com/carrierwaveuploader/carrierwave/pull/1934))
 * Replace mime-types dependency with mini_mime to save memory(@bradleypriest [#2292](https://github.com/carrierwaveuploader/carrierwave/pull/2292))
 * Delegate MiniMagick processing to ImageProcessing gem(@janko [#2298](https://github.com/carrierwaveuploader/carrierwave/pull/2298))
-* Handle ActiveRecord transaction correctly, not storing or removing files on rollback(@skosh [#2209](https://github.com/carrierwaveuploader/carrierwave/pull/2209))
+* [BREAKING CHANGE] Handle ActiveRecord transaction correctly, not storing or removing files on rollback(@skosh [#2209](https://github.com/carrierwaveuploader/carrierwave/pull/2209)) - We changed an `after_save` callback to `after_commit`. So if you use `after_commit` callbacks on the model that rely on the file being present, you should declare these callbacks _before_ the `mount_uploader` call on the model, because ActiveRecord runs `after_commit` callbacks in the _reverse_ order they are declared. 
 
 ### Deprecated
 * `fog_provider` configuration was deprecated and has no effect, just adding fog providers to `Gemfile` will load them(@mshibuya [ca201ee2](https://github.com/carrierwaveuploader/carrierwave/commit/ca201ee2ceebe2d916be3bc1396fe381cc93afd7))
